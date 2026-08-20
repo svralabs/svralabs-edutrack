@@ -1,0 +1,125 @@
+{
+  "project_name": "svralabs-edutrack",
+  "architecture_summary": "React + Vite + Tailwind CSS educational management app. Features student roster, grade tracking, course progress, attendance logging, and performance analytics with localStorage mock persistence.",
+  "tickets": [
+    {
+      "id": "TASK-001",
+      "role": "frontend",
+      "model": "hermes-auto",
+      "title": "State store and mock data provider",
+      "description": "Create global React context for students, courses, grades, attendance logs, and notifications. Support localStorage persistence.",
+      "target_files": [
+        "src/context/EduTrackContext.jsx"
+      ],
+      "acceptance_criteria": [
+        "Provide state for students, courses, attendance, grades, notifications",
+        "Include CRUD methods for student records and grade entries",
+        "Seed realistic initial mock dataset if localStorage empty"
+      ],
+      "status": "DONE"
+    },
+    {
+      "id": "TASK-002",
+      "role": "frontend",
+      "model": "hermes-auto",
+      "title": "Dashboard overview and metric cards",
+      "description": "Build main dashboard view with KPI counters, recent student activity, upcoming deadlines, and quick action bar.",
+      "target_files": [
+        "src/pages/Dashboard.jsx",
+        "src/components/MetricCard.jsx"
+      ],
+      "acceptance_criteria": [
+        "Display total students, active courses, average attendance rate, and passing rate KPIs",
+        "Render recent submissions feed and alerts for at-risk students",
+        "Provide quick-filter controls for academic terms"
+      ],
+      "status": "DONE"
+    },
+    {
+      "id": "TASK-003",
+      "role": "frontend",
+      "model": "hermes-auto",
+      "title": "Student roster and profile view modal",
+      "description": "Build searchable, filterable student directory table with status badges and detail drawer modal.",
+      "target_files": [
+        "src/pages/Students.jsx",
+        "src/components/StudentModal.jsx"
+      ],
+      "acceptance_criteria": [
+        "Filter students by grade level, course enrollment, and academic status",
+        "Search bar with live filtering by name or ID",
+        "Modal view showing detailed student GPA, attendance history, and notes"
+      ],
+      "status": "DONE"
+    },
+    {
+      "id": "TASK-004",
+      "role": "frontend",
+      "model": "hermes-auto",
+      "title": "Course curriculum and module tracker",
+      "description": "Create course management page displaying syllabus milestones, completion bars, and instructor details.",
+      "target_files": [
+        "src/pages/Courses.jsx",
+        "src/components/ModuleList.jsx"
+      ],
+      "acceptance_criteria": [
+        "Grid of enrolled courses with progress percentages",
+        "Interactive module checklist to toggle completed topics",
+        "Filter courses by department and semester"
+      ],
+      "status": "DONE"
+    },
+    {
+      "id": "TASK-005",
+      "role": "frontend",
+      "model": "hermes-auto",
+      "title": "Assessments gradebook and daily attendance log",
+      "description": "Build grade entry matrix and date-based attendance checklist with instant status toggling.",
+      "target_files": [
+        "src/pages/Assessments.jsx",
+        "src/pages/Attendance.jsx"
+      ],
+      "acceptance_criteria": [
+        "Gradebook table with inline score editing and letter grade calculation",
+        "Attendance sheet allowing Present, Absent, Late marks per student",
+        "Bulk mark actions (Mark all Present)"
+      ],
+      "status": "DONE"
+    },
+    {
+      "id": "TASK-006",
+      "role": "frontend",
+      "model": "hermes-auto",
+      "title": "Performance analytics and report exporter",
+      "description": "Create visual charts page for grade distribution, attendance trends, and CSV data export.",
+      "target_files": [
+        "src/pages/Analytics.jsx"
+      ],
+      "acceptance_criteria": [
+        "Visual grade distribution bar breakdown and cohort comparison",
+        "Attendance trend line chart using SVG or lightweight bars",
+        "Export roster and performance report to CSV button"
+      ],
+      "status": "DONE"
+    },
+    {
+      "id": "TASK-007",
+      "role": "frontend",
+      "model": "hermes-auto",
+      "title": "App shell and navigation wiring (src/App.jsx)",
+      "description": "Wire sidebar navigation, responsive header with notifications, top search, theme state, and page routing.",
+      "target_files": [
+        "src/App.jsx",
+        "src/components/Sidebar.jsx"
+      ],
+      "acceptance_criteria": [
+        "Responsive sidebar with links to Dashboard, Students, Courses, Assessments, Attendance, Analytics",
+        "Wrap root in EduTrackProvider context",
+        "Clean mobile drawer navigation toggle"
+      ],
+      "status": "DONE"
+    }
+  ],
+  "status": "IN_PROGRESS",
+  "updated_at": "2026-08-20 09:51:55"
+}
