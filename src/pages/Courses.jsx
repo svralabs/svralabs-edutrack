@@ -1,148 +1,141 @@
 import { useState } from 'react';
-import { Check, ChevronDown, ChevronUp } from 'lucide-react';
-import ModuleList from '../components/ModuleList';
+import { Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Courses = () => {
-  const [courses, setCourses] = useState([
-    {
-      id: 1,
-      title: 'Computer Science Fundamentals',
-      department: 'Computer Science',
-      semester: 'Fall 2023',
-      instructor: 'Dr. Alice Johnson',
-      progress: 65,
-      modules: [
-        { id: 1, title: 'Introduction to Programming', completed: true },
-        { id: 2, title: 'Data Structures', completed: true },
-        { id: 3, title: 'Algorithms', completed: false },
-        { id: 4, title: 'Software Engineering', completed: false },
-      ],
-    },
-    {
-      id: 2,
-      title: 'Mathematics for Engineers',
-      department: 'Mathematics',
-      semester: 'Spring 2024',
-      instructor: 'Prof. Robert Smith',
-      progress: 30,
-      modules: [
-        { id: 1, title: 'Calculus I', completed: true },
-        { id: 2, title: 'Linear Algebra', completed: false },
-        { id: 3, title: 'Differential Equations', completed: false },
-      ],
-    },
-  ]);
-  const [filters, setFilters] = useState({
-    department: '',
-    semester: '',
+  const mockCourses = [
+    { id: 1, name: 'Introduction to React', instructor: 'John Doe', students: 45, status: 'Active' },
+    { id: 2, name: 'Advanced JavaScript', instructor: 'Jane Smith', students: 32, status: 'Completed' },
+    { id: 3, name: 'Web Development Basics', instructor: 'Mike Johnson', students: 56, status: 'Active' },
+    { id: 4, name: 'Data Structures and Algorithms', instructor: 'Sarah Williams', students: 28, status: 'Upcoming' },
+    { id: 5, name: 'Database Management', instructor: 'David Brown', students: 39, status: 'Active' },
+    { id: 6, name: 'Mobile App Development', instructor: 'Emily Davis', students: 41, status: 'Completed' },
+    { id: 7, name: 'UI/UX Design Principles', instructor: 'Robert Wilson', students: 35, status: 'Upcoming' },
+    { id: 8, name: 'Software Engineering', instructor: 'Jennifer Miller', students: 50, status: 'Active' },
+    { id: 9, name: 'Cybersecurity Fundamentals', instructor: 'Thomas Moore', students: 25, status: 'Completed' },
+    { id: 10, name: 'Cloud Computing', instructor: 'Lisa Taylor', students: 37, status: 'Active' },
+    { id: 11, name: 'Machine Learning Basics', instructor: 'Kevin Anderson', students: 48, status: 'Upcoming' },
+    { id: 12, name: 'Artificial Intelligence', instructor: 'Michelle Thomas', students: 33, status: 'Active' },
+  ];
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const filteredCourses = mockCourses.filter(course => {
+    const matchesSearch = course.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'All' || course.status === statusFilter;
+    return matchesSearch && matchesStatus;
   });
-  const [expandedCourse, setExpandedCourse] = useState(null);
 
-  const toggleModule = (courseId, moduleId) => {
-    setCourses(courses.map(course => {
-      if (course.id === courseId) {
-        const updatedModules = course.modules.map(module =>
-          module.id === moduleId ? { ...module, completed: !module.completed } : module
-        );
-        const completedCount = updatedModules.filter(module => module.completed).length;
-        const progress = Math.round((completedCount / updatedModules.length) * 100);
-        return { ...course, modules: updatedModules, progress };
-      }
-      return course;
-    }));
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
+  const paginatedCourses = filteredCourses.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
-
-  const toggleCourseExpansion = (courseId) => {
-    setExpandedCourse(expandedCourse === courseId ? null : courseId);
-  };
-
-  const filteredCourses = courses.filter(course => {
-    return (
-      (filters.department === '' || course.department === filters.department) &&
-      (filters.semester === '' || course.semester === filters.semester)
-    );
-  });
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">My Courses</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Courses</h1>
 
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-          <select
-            className="w-full p-2 border rounded"
-            value={filters.department}
-            onChange={(e) => setFilters({ ...filters, department: e.target.value })}
-          >
-            <option value="">All Departments</option>
-            <option value="Computer Science">Computer Science</option>
-            <option value="Mathematics">Mathematics</option>
-          </select>
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="relative flex-1">
+          <input
+            type="text"
+            placeholder="Search courses..."
+            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Search className="absolute left-3 top-3 text-gray-400" size={20} />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+        <div className="relative">
           <select
-            className="w-full p-2 border rounded"
-            value={filters.semester}
-            onChange={(e) => setFilters({ ...filters, semester: e.target.value })}
+            className="pl-10 pr-4 py-2 border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
           >
-            <option value="">All Semesters</option>
-            <option value="Fall 2023">Fall 2023</option>
-            <option value="Spring 2024">Spring 2024</option>
+            <option value="All">All Statuses</option>
+            <option value="Active">Active</option>
+            <option value="Completed">Completed</option>
+            <option value="Upcoming">Upcoming</option>
           </select>
+          <Filter className="absolute left-3 top-3 text-gray-400" size={20} />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCourses.map(course => (
-          <div key={course.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-2">{course.title}</h2>
-              <p className="text-gray-600 mb-1">{course.department}</p>
-              <p className="text-gray-600 mb-4">{course.semester}</p>
-              <p className="text-gray-700 mb-4">Instructor: {course.instructor}</p>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border rounded-lg">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="py-3 px-4 text-left">Course Name</th>
+              <th className="py-3 px-4 text-left">Instructor</th>
+              <th className="py-3 px-4 text-left">Students</th>
+              <th className="py-3 px-4 text-left">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedCourses.map((course) => (
+              <tr key={course.id} className="border-t">
+                <td className="py-3 px-4">{course.name}</td>
+                <td className="py-3 px-4">{course.instructor}</td>
+                <td className="py-3 px-4">{course.students}</td>
+                <td className="py-3 px-4">
+                  <span className={`px-2 py-1 rounded-full text-xs ${
+                    course.status === 'Active' ? 'bg-green-100 text-green-800' :
+                    course.status === 'Completed' ? 'bg-blue-100 text-blue-800' :
+                    'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {course.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-              <div className="mb-4">
-                <div className="flex justify-between mb-1">
-                  <span className="text-base font-medium text-blue-700">Progress</span>
-                  <span className="text-sm font-medium text-blue-700">{course.progress}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div
-                    className="bg-blue-600 h-2.5 rounded-full"
-                    style={{ width: `${course.progress}%` }}
-                  ></div>
-                </div>
-              </div>
+      <div className="flex justify-between items-center mt-6">
+        <div className="text-sm text-gray-600">
+          Showing {filteredCourses.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredCourses.length)} of {filteredCourses.length} courses
+        </div>
 
-              <button
-                onClick={() => toggleCourseExpansion(course.id)}
-                className="flex items-center text-blue-600 hover:text-blue-800"
-              >
-                {expandedCourse === course.id ? (
-                  <>
-                    <ChevronUp className="mr-1" size={16} />
-                    Hide Modules
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown className="mr-1" size={16} />
-                    Show Modules
-                  </>
-                )}
-              </button>
-            </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-1 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft size={20} />
+          </button>
 
-            {expandedCourse === course.id && (
-              <ModuleList
-                modules={course.modules}
-                onToggleModule={(moduleId) => toggleModule(course.id, moduleId)}
-              />
-            )}
-          </div>
-        ))}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`px-3 py-1 border rounded-lg ${
+                currentPage === page ? 'bg-blue-500 text-white' : ''
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
       </div>
     </div>
   );

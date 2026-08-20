@@ -1,20 +1,22 @@
 {
   "project_name": "svralabs-edutrack",
-  "architecture_summary": "React + Vite + Tailwind CSS educational management app. Features student roster, grade tracking, course progress, attendance logging, and performance analytics with localStorage mock persistence.",
+  "architecture_summary": "React Vite Tailwind app. Core pages: Dashboard, Courses, Students, Reports. Auth flow: login, register, password reset. State: React Context + localStorage. API: mock Axios client. Styling: Tailwind CSS. Routing: React Router v6. Build: Vite. Testing: Vitest + React Testing Library. Lint: ESLint + Prettier.",
   "tickets": [
     {
       "id": "TASK-001",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "State store and mock data provider",
-      "description": "Create global React context for students, courses, grades, attendance logs, and notifications. Support localStorage persistence.",
+      "title": "Create base layout shell (src/layouts/BaseLayout.jsx)",
+      "description": "Build base layout with header, sidebar, main content area. Header: logo, user dropdown. Sidebar: navigation links (Dashboard, Courses, Students, Reports). Mobile responsive. Use Tailwind.",
       "target_files": [
-        "src/context/EduTrackContext.jsx"
+        "src/layouts/BaseLayout.jsx",
+        "src/layouts/BaseLayout.css"
       ],
       "acceptance_criteria": [
-        "Provide state for students, courses, attendance, grades, notifications",
-        "Include CRUD methods for student records and grade entries",
-        "Seed realistic initial mock dataset if localStorage empty"
+        "Layout render without errors",
+        "Sidebar collapse on mobile",
+        "Header show logo and user dropdown",
+        "Navigation links active state highlight current route"
       ],
       "status": "DONE"
     },
@@ -22,16 +24,16 @@
       "id": "TASK-002",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Dashboard overview and metric cards",
-      "description": "Build main dashboard view with KPI counters, recent student activity, upcoming deadlines, and quick action bar.",
+      "title": "Implement Dashboard page (src/pages/Dashboard.jsx)",
+      "description": "Build dashboard with stats cards, recent activity, quick actions. Stats cards: total courses, students, completion rate. Recent activity: table with last 5 enrollments. Quick actions: buttons for common tasks. Use Tailwind for styling.",
       "target_files": [
-        "src/pages/Dashboard.jsx",
-        "src/components/MetricCard.jsx"
+        "src/pages/Dashboard.jsx"
       ],
       "acceptance_criteria": [
-        "Display total students, active courses, average attendance rate, and passing rate KPIs",
-        "Render recent submissions feed and alerts for at-risk students",
-        "Provide quick-filter controls for academic terms"
+        "Page render without errors",
+        "Stats cards show mock data",
+        "Recent activity table display 5 items",
+        "Quick action buttons clickable"
       ],
       "status": "DONE"
     },
@@ -39,16 +41,17 @@
       "id": "TASK-003",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Student roster and profile view modal",
-      "description": "Build searchable, filterable student directory table with status badges and detail drawer modal.",
+      "title": "Build Courses page (src/pages/Courses.jsx)",
+      "description": "Create courses page with list view, search, filter, pagination. List view: table with course name, instructor, students, status. Search: input field. Filter: dropdown for status. Pagination: 10 items per page. Use Tailwind.",
       "target_files": [
-        "src/pages/Students.jsx",
-        "src/components/StudentModal.jsx"
+        "src/pages/Courses.jsx"
       ],
       "acceptance_criteria": [
-        "Filter students by grade level, course enrollment, and academic status",
-        "Search bar with live filtering by name or ID",
-        "Modal view showing detailed student GPA, attendance history, and notes"
+        "Page render without errors",
+        "Table show mock course data",
+        "Search filter courses by name",
+        "Filter dropdown change status",
+        "Pagination work"
       ],
       "status": "DONE"
     },
@@ -56,16 +59,16 @@
       "id": "TASK-004",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Course curriculum and module tracker",
-      "description": "Create course management page displaying syllabus milestones, completion bars, and instructor details.",
+      "title": "Implement Students page (src/pages/Students.jsx)",
+      "description": "Build students page with list view, search, enrollment status filter. List view: table with student name, email, enrolled courses, progress. Search: input field. Filter: dropdown for enrollment status. Use Tailwind.",
       "target_files": [
-        "src/pages/Courses.jsx",
-        "src/components/ModuleList.jsx"
+        "src/pages/Students.jsx"
       ],
       "acceptance_criteria": [
-        "Grid of enrolled courses with progress percentages",
-        "Interactive module checklist to toggle completed topics",
-        "Filter courses by department and semester"
+        "Page render without errors",
+        "Table show mock student data",
+        "Search filter students by name/email",
+        "Filter dropdown change enrollment status"
       ],
       "status": "DONE"
     },
@@ -73,16 +76,15 @@
       "id": "TASK-005",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Assessments gradebook and daily attendance log",
-      "description": "Build grade entry matrix and date-based attendance checklist with instant status toggling.",
+      "title": "Create Reports page (src/pages/Reports.jsx)",
+      "description": "Build reports page with chart, export options. Chart: course completion rate (bar chart). Export: buttons for CSV, PDF. Use Tailwind + Chart.js for visualization.",
       "target_files": [
-        "src/pages/Assessments.jsx",
-        "src/pages/Attendance.jsx"
+        "src/pages/Reports.jsx"
       ],
       "acceptance_criteria": [
-        "Gradebook table with inline score editing and letter grade calculation",
-        "Attendance sheet allowing Present, Absent, Late marks per student",
-        "Bulk mark actions (Mark all Present)"
+        "Page render without errors",
+        "Chart show mock data",
+        "Export buttons trigger download"
       ],
       "status": "DONE"
     },
@@ -90,15 +92,17 @@
       "id": "TASK-006",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Performance analytics and report exporter",
-      "description": "Create visual charts page for grade distribution, attendance trends, and CSV data export.",
+      "title": "Implement auth pages (src/pages/auth/*)",
+      "description": "Build login, register, password reset pages. Login: email, password, submit. Register: name, email, password, confirm password. Password reset: email input, submit. Use Tailwind for styling. Form validation: required fields, email format, password match.",
       "target_files": [
-        "src/pages/Analytics.jsx"
+        "src/pages/auth/Login.jsx",
+        "src/pages/auth/Register.jsx",
+        "src/pages/auth/PasswordReset.jsx"
       ],
       "acceptance_criteria": [
-        "Visual grade distribution bar breakdown and cohort comparison",
-        "Attendance trend line chart using SVG or lightweight bars",
-        "Export roster and performance report to CSV button"
+        "All pages render without errors",
+        "Form validation work",
+        "Submit buttons trigger mock auth flow"
       ],
       "status": "DONE"
     },
@@ -106,20 +110,38 @@
       "id": "TASK-007",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "App shell and navigation wiring (src/App.jsx)",
-      "description": "Wire sidebar navigation, responsive header with notifications, top search, theme state, and page routing.",
+      "title": "Set up mock API client (src/api/mockClient.js)",
+      "description": "Create mock Axios client for auth, courses, students, reports. Return mock data for all endpoints. Use MSW for mocking during development.",
       "target_files": [
-        "src/App.jsx",
-        "src/components/Sidebar.jsx"
+        "src/api/mockClient.js",
+        "src/api/mocks/handlers.js"
       ],
       "acceptance_criteria": [
-        "Responsive sidebar with links to Dashboard, Students, Courses, Assessments, Attendance, Analytics",
-        "Wrap root in EduTrackProvider context",
-        "Clean mobile drawer navigation toggle"
+        "Mock client return data for all endpoints",
+        "MSW intercept requests in dev",
+        "Error handling for failed requests"
+      ],
+      "status": "DONE"
+    },
+    {
+      "id": "TASK-008",
+      "role": "frontend",
+      "model": "hermes-auto",
+      "title": "App shell and navigation wiring (src/App.jsx)",
+      "description": "Set up React Router. Routes: auth (login, register, password reset), main (dashboard, courses, students, reports). Auth guard: redirect to login if not authenticated. Use BaseLayout for main routes. Error boundary: 404 page.",
+      "target_files": [
+        "src/App.jsx",
+        "src/routes.jsx"
+      ],
+      "acceptance_criteria": [
+        "All routes render correct pages",
+        "Auth guard redirect unauthenticated users",
+        "BaseLayout wrap main routes",
+        "404 page show for unknown routes"
       ],
       "status": "DONE"
     }
   ],
   "status": "IN_PROGRESS",
-  "updated_at": "2026-08-20 09:51:55"
+  "updated_at": "2026-08-20 09:59:28"
 }

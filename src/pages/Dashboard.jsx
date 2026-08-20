@@ -1,108 +1,131 @@
-import React from 'react';
-import { Users, BookOpen, Calendar, Percent } from 'lucide-react';
-import MetricCard from '../components/MetricCard';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Users, BookOpen, CheckCircle, Plus, Edit, Trash2 } from 'lucide-react';
 
 const Dashboard = () => {
-  const metrics = [
-    { title: 'Total Students', value: '1,245', icon: Users, color: 'bg-blue-50' },
-    { title: 'Active Courses', value: '28', icon: BookOpen, color: 'bg-green-50' },
-    { title: 'Avg Attendance', value: '87%', icon: Calendar, color: 'bg-yellow-50' },
-    { title: 'Passing Rate', value: '72%', icon: Percent, color: 'bg-purple-50' },
-  ];
+  const [stats, setStats] = useState({
+    totalCourses: 0,
+    totalStudents: 0,
+    completionRate: 0,
+  });
 
-  const recentSubmissions = [
-    { id: 1, student: 'Nguyen Van A', course: 'Math 101', date: '2023-05-15', status: 'Graded' },
-    { id: 2, student: 'Tran Thi B', course: 'Physics 201', date: '2023-05-14', status: 'Pending' },
-    { id: 3, student: 'Le Van C', course: 'Chemistry 101', date: '2023-05-13', status: 'Graded' },
-  ];
+  const [recentActivity, setRecentActivity] = useState([]);
 
-  const atRiskStudents = [
-    { id: 1, name: 'Pham Thi D', course: 'Math 101', risk: 'Low' },
-    { id: 2, name: 'Hoang Van E', course: 'Physics 201', risk: 'Medium' },
-    { id: 3, name: 'Vu Thi F', course: 'Chemistry 101', risk: 'High' },
-  ];
+  useEffect(() => {
+    const mockStats = {
+      totalCourses: 15,
+      totalStudents: 234,
+      completionRate: 78,
+    };
+
+    const mockActivity = [
+      { id: 1, student: 'Nguyen Van A', course: 'React Basics', date: '2023-05-15' },
+      { id: 2, student: 'Tran Thi B', course: 'Advanced JavaScript', date: '2023-05-14' },
+      { id: 3, student: 'Le Van C', course: 'Node.js Fundamentals', date: '2023-05-13' },
+      { id: 4, student: 'Pham Thi D', course: 'CSS Mastery', date: '2023-05-12' },
+      { id: 5, student: 'Hoang Van E', course: 'Web Performance', date: '2023-05-11' },
+    ];
+
+    setStats(mockStats);
+    setRecentActivity(mockActivity);
+  }, []);
+
+  const handleQuickAction = (action) => {
+    console.log(`Quick action: ${action}`);
+  };
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Dashboard Overview</h1>
+      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {metrics.map((metric, index) => (
-          <MetricCard key={index} {...metric} />
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Recent Submissions</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-4 py-2 text-left">Student</th>
-                  <th className="px-4 py-2 text-left">Course</th>
-                  <th className="px-4 py-2 text-left">Date</th>
-                  <th className="px-4 py-2 text-left">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentSubmissions.map((submission) => (
-                  <tr key={submission.id} className="border-b">
-                    <td className="px-4 py-2">{submission.student}</td>
-                    <td className="px-4 py-2">{submission.course}</td>
-                    <td className="px-4 py-2">{submission.date}</td>
-                    <td className="px-4 py-2">
-                      <span className={`px-2 py-1 rounded-full text-xs ${submission.status === 'Graded' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                        {submission.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-white p-6 rounded-lg shadow">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Total Courses</h2>
+            <BookOpen className="h-6 w-6 text-blue-500" />
           </div>
+          <p className="text-3xl font-bold">{stats.totalCourses}</p>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-4">At-Risk Students</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-4 py-2 text-left">Name</th>
-                  <th className="px-4 py-2 text-left">Course</th>
-                  <th className="px-4 py-2 text-left">Risk Level</th>
-                </tr>
-              </thead>
-              <tbody>
-                {atRiskStudents.map((student) => (
-                  <tr key={student.id} className="border-b">
-                    <td className="px-4 py-2">{student.name}</td>
-                    <td className="px-4 py-2">{student.course}</td>
-                    <td className="px-4 py-2">
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        student.risk === 'Low' ? 'bg-green-100 text-green-800' :
-                        student.risk === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
-                        {student.risk}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="bg-white p-6 rounded-lg shadow">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Total Students</h2>
+            <Users className="h-6 w-6 text-green-500" />
           </div>
+          <p className="text-3xl font-bold">{stats.totalStudents}</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Completion Rate</h2>
+            <CheckCircle className="h-6 w-6 text-purple-500" />
+          </div>
+          <p className="text-3xl font-bold">{stats.completionRate}%</p>
         </div>
       </div>
 
-      <div className="mt-6 bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-lg font-semibold mb-4">Quick Filters</h2>
-        <div className="flex flex-wrap gap-2">
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-md">All Terms</button>
-          <button className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md">Spring 2023</button>
-          <button className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md">Fall 2022</button>
-          <button className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md">Summer 2022</button>
+      <div className="bg-white p-6 rounded-lg shadow mb-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold">Quick Actions</h2>
+        </div>
+        <div className="flex space-x-4">
+          <button
+            onClick={() => handleQuickAction('add-course')}
+            className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add Course
+          </button>
+          <button
+            onClick={() => handleQuickAction('add-student')}
+            className="flex items-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add Student
+          </button>
+          <button
+            onClick={() => handleQuickAction('edit')}
+            className="flex items-center px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+          >
+            <Edit className="mr-2 h-4 w-4" />
+            Edit
+          </button>
+          <button
+            onClick={() => handleQuickAction('delete')}
+            className="flex items-center px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-lg shadow">
+        <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {recentActivity.map((activity) => (
+                <tr key={activity.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{activity.student}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{activity.course}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{activity.date}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <Link to={`/students/${activity.id}`} className="text-indigo-600 hover:text-indigo-900 mr-4">View</Link>
+                    <button onClick={() => handleQuickAction(`edit-${activity.id}`)} className="text-yellow-600 hover:text-yellow-900">Edit</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
