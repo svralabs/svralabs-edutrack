@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function HomeworkSearch() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('lessons');
 
   return (
-    <div className="min-h-screen bg-background text-on-background max-w-md mx-auto relative shadow-2xl overflow-hidden pb-24">
+    <div className="w-full min-h-screen">
       
 {/*  TopAppBar  */}
 <header className="flex justify-between items-center px-margin-mobile py-4 w-full bg-background docked full-width top-0 z-40">
@@ -110,19 +109,19 @@ export default function HomeworkSearch() {
 <nav className="fixed bottom-margin-mobile left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-md z-50 flex justify-around items-center p-2 bg-on-background dark:bg-surface-container-lowest shadow-lg shadow-primary/10 rounded-full">
 {/*  Home  */}
 <a className="flex items-center justify-center text-surface-variant dark:text-on-surface-variant p-3 hover:bg-primary/20 transition-colors active:scale-90 transition-all duration-200" href="#">
-<span className="material-symbols-outlined" onClick={() => navigate("/")} data-icon="home">home</span>
+<span className="material-symbols-outlined" data-icon="home">home</span>
 </a>
 {/*  Lessons (Active)  */}
 <a className="flex items-center justify-center bg-primary-container text-on-primary-container rounded-full p-3 active:scale-90 transition-all duration-200" href="#">
-<span className="material-symbols-outlined" onClick={() => navigate("/homework")} data-icon="menu_book" style={{ "fontVariationSettings": "'FILL' 1" }}>menu_book</span>
+<span className="material-symbols-outlined" data-icon="menu_book" style={{ "fontVariationSettings": "'FILL' 1" }}>menu_book</span>
 </a>
 {/*  Calendar  */}
 <a className="flex items-center justify-center text-surface-variant dark:text-on-surface-variant p-3 hover:bg-primary/20 transition-colors active:scale-90 transition-all duration-200" href="#">
-<span className="material-symbols-outlined" onClick={() => navigate("/exams")} data-icon="calendar_today">calendar_today</span>
+<span className="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
 </a>
 {/*  Profile  */}
 <a className="flex items-center justify-center text-surface-variant dark:text-on-surface-variant p-3 hover:bg-primary/20 transition-colors active:scale-90 transition-all duration-200" href="#">
-<span className="material-symbols-outlined" onClick={() => navigate("/register")} data-icon="person">person</span>
+<span className="material-symbols-outlined" data-icon="person">person</span>
 </a>
 </nav>
 
