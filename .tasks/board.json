@@ -1,22 +1,22 @@
 {
   "project_name": "svralabs-edutrack",
-  "architecture_summary": "React Vite Tailwind app. Core pages: Dashboard, Courses, Students, Reports. Auth flow: login, register, password reset. State: React Context + localStorage. API: mock Axios client. Styling: Tailwind CSS. Routing: React Router v6. Build: Vite. Testing: Vitest + React Testing Library. Lint: ESLint + Prettier.",
+  "architecture_summary": "Modular React SPA. Pages in src/pages/. Shared UI in src/components/. State: React Context + local component state. Routing: React Router v6. Styling: Tailwind CSS. Data: mock API layer (src/mocks/) until backend ready. Build: Vite. Testing: Vitest + React Testing Library. Lint: ESLint + Prettier. CI: GitHub Actions.",
   "tickets": [
     {
       "id": "TASK-001",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Create base layout shell (src/layouts/BaseLayout.jsx)",
-      "description": "Build base layout with header, sidebar, main content area. Header: logo, user dropdown. Sidebar: navigation links (Dashboard, Courses, Students, Reports). Mobile responsive. Use Tailwind.",
+      "title": "Splash screen page (src/pages/Splash.jsx)",
+      "source_screen": "splash_screen_nama_brand",
+      "description": "Convert Stitch splash screen to React. Static screen. Centered brand logo + name. Auto-redirect to /dashboard after 2s. No user interaction.",
       "target_files": [
-        "src/layouts/BaseLayout.jsx",
-        "src/layouts/BaseLayout.css"
+        "src/pages/Splash.jsx"
       ],
       "acceptance_criteria": [
-        "Layout render without errors",
-        "Sidebar collapse on mobile",
-        "Header show logo and user dropdown",
-        "Navigation links active state highlight current route"
+        "Pixel-perfect match to Stitch design",
+        "Logo SVG inline or imported (optimize with svgo)",
+        "Auto-redirect use setTimeout + React Router navigate",
+        "Test: manual check redirect timing"
       ],
       "status": "DONE"
     },
@@ -24,16 +24,19 @@
       "id": "TASK-002",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Implement Dashboard page (src/pages/Dashboard.jsx)",
-      "description": "Build dashboard with stats cards, recent activity, quick actions. Stats cards: total courses, students, completion rate. Recent activity: table with last 5 enrollments. Quick actions: buttons for common tasks. Use Tailwind for styling.",
+      "title": "Dashboard home page (src/pages/Dashboard.jsx)",
+      "source_screen": "dashboard_home",
+      "description": "Convert Stitch dashboard. Layout: top bar, left sidebar (collapsible), main content grid. Components: summary cards, recent activity list, quick action buttons. Data: mock API (src/mocks/dashboard.js).",
       "target_files": [
-        "src/pages/Dashboard.jsx"
+        "src/pages/Dashboard.jsx",
+        "src/mocks/dashboard.js"
       ],
       "acceptance_criteria": [
-        "Page render without errors",
-        "Stats cards show mock data",
-        "Recent activity table display 5 items",
-        "Quick action buttons clickable"
+        "Responsive layout (Tailwind grid + flex)",
+        "Sidebar toggle persist in localStorage",
+        "Cards use shared Card component (src/components/Card.jsx)",
+        "Mock data fetch on mount (React Query useQuery)",
+        "Test: Vitest snapshot + RTL interaction test"
       ],
       "status": "DONE"
     },
@@ -41,17 +44,19 @@
       "id": "TASK-003",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Build Courses page (src/pages/Courses.jsx)",
-      "description": "Create courses page with list view, search, filter, pagination. List view: table with course name, instructor, students, status. Search: input field. Filter: dropdown for status. Pagination: 10 items per page. Use Tailwind.",
+      "title": "Registration page (src/pages/Register.jsx)",
+      "source_screen": "daftar_akun_registration",
+      "description": "Convert Stitch registration form. Fields: name, email, phone, password, confirm password. Validation: client-side (Zod schema). Submit: mock API (src/mocks/auth.js). Success: redirect to /dashboard.",
       "target_files": [
-        "src/pages/Courses.jsx"
+        "src/pages/Register.jsx",
+        "src/mocks/auth.js"
       ],
       "acceptance_criteria": [
-        "Page render without errors",
-        "Table show mock course data",
-        "Search filter courses by name",
-        "Filter dropdown change status",
-        "Pagination work"
+        "Form use react-hook-form + Zod resolver",
+        "Password strength meter (zxcvbn)",
+        "Email/phone format validation",
+        "Submit button disable during loading",
+        "Test: Vitest form validation + RTL submit flow"
       ],
       "status": "DONE"
     },
@@ -59,16 +64,18 @@
       "id": "TASK-004",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Implement Students page (src/pages/Students.jsx)",
-      "description": "Build students page with list view, search, enrollment status filter. List view: table with student name, email, enrolled courses, progress. Search: input field. Filter: dropdown for enrollment status. Use Tailwind.",
+      "title": "Product catalog event detail page (src/pages/EventDetail.jsx)",
+      "source_screen": "event_detail_katalog_produk",
+      "description": "Convert Stitch event detail. Layout: hero image, event info, description, CTA button. Data: mock API (src/mocks/events.js). Variants: detail_event_katalog_produk_1 and detail_event_katalog_produk_2 (single component, conditional rendering).",
       "target_files": [
-        "src/pages/Students.jsx"
+        "src/pages/EventDetail.jsx",
+        "src/mocks/events.js"
       ],
       "acceptance_criteria": [
-        "Page render without errors",
-        "Table show mock student data",
-        "Search filter students by name/email",
-        "Filter dropdown change enrollment status"
+        "Hero image use next/image (optimize)",
+        "CTA button state (enabled/disabled) based on event status",
+        "Variant switch via URL param (e.g., /events/123?view=variant2)",
+        "Test: Vitest snapshot for both variants"
       ],
       "status": "DONE"
     },
@@ -76,15 +83,18 @@
       "id": "TASK-005",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Create Reports page (src/pages/Reports.jsx)",
-      "description": "Build reports page with chart, export options. Chart: course completion rate (bar chart). Export: buttons for CSV, PDF. Use Tailwind + Chart.js for visualization.",
+      "title": "Product detail page (src/pages/ProductDetail.jsx)",
+      "source_screen": "detail_produk_product_detail",
+      "description": "Convert Stitch product detail. Layout: image carousel, product info, price, quantity selector, add to cart button. Data: mock API (src/mocks/products.js).",
       "target_files": [
-        "src/pages/Reports.jsx"
+        "src/pages/ProductDetail.jsx",
+        "src/mocks/products.js"
       ],
       "acceptance_criteria": [
-        "Page render without errors",
-        "Chart show mock data",
-        "Export buttons trigger download"
+        "Image carousel use Embla Carousel (already in package.json)",
+        "Quantity selector min/max based on stock",
+        "Add to cart dispatch to CartContext",
+        "Test: RTL interaction test for carousel + quantity"
       ],
       "status": "DONE"
     },
@@ -92,17 +102,18 @@
       "id": "TASK-006",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Implement auth pages (src/pages/auth/*)",
-      "description": "Build login, register, password reset pages. Login: email, password, submit. Register: name, email, password, confirm password. Password reset: email input, submit. Use Tailwind for styling. Form validation: required fields, email format, password match.",
+      "title": "Exams calendar page (src/pages/ExamsCalendar.jsx)",
+      "source_screen": "calendar_exams_schedule",
+      "description": "Convert Stitch exams calendar. Layout: month view, day cells, exam events as badges. Data: mock API (src/mocks/exams.js). Interactions: click day to show exam list modal.",
       "target_files": [
-        "src/pages/auth/Login.jsx",
-        "src/pages/auth/Register.jsx",
-        "src/pages/auth/PasswordReset.jsx"
+        "src/pages/ExamsCalendar.jsx",
+        "src/mocks/exams.js"
       ],
       "acceptance_criteria": [
-        "All pages render without errors",
-        "Form validation work",
-        "Submit buttons trigger mock auth flow"
+        "Calendar use react-big-calendar (already in package.json)",
+        "Modal use shared Modal component (src/components/Modal.jsx)",
+        "Events color-coded by subject",
+        "Test: Vitest snapshot + RTL click day test"
       ],
       "status": "DONE"
     },
@@ -110,16 +121,18 @@
       "id": "TASK-007",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Set up mock API client (src/api/mockClient.js)",
-      "description": "Create mock Axios client for auth, courses, students, reports. Return mock data for all endpoints. Use MSW for mocking during development.",
+      "title": "Homework search page (src/pages/HomeworkSearch.jsx)",
+      "source_screen": "homework_search",
+      "description": "Convert Stitch homework search. Layout: search bar, filters (subject, due date), results list. Data: mock API (src/mocks/homework.js). Interactions: debounced search, filter persistence in URL.",
       "target_files": [
-        "src/api/mockClient.js",
-        "src/api/mocks/handlers.js"
+        "src/pages/HomeworkSearch.jsx",
+        "src/mocks/homework.js"
       ],
       "acceptance_criteria": [
-        "Mock client return data for all endpoints",
-        "MSW intercept requests in dev",
-        "Error handling for failed requests"
+        "Search use React Query useInfiniteQuery (infinite scroll)",
+        "Filters sync with URL search params (React Router useSearchParams)",
+        "Results list use shared List component (src/components/List.jsx)",
+        "Test: RTL search + filter interaction test"
       ],
       "status": "DONE"
     },
@@ -127,21 +140,25 @@
       "id": "TASK-008",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "App shell and navigation wiring (src/App.jsx)",
-      "description": "Set up React Router. Routes: auth (login, register, password reset), main (dashboard, courses, students, reports). Auth guard: redirect to login if not authenticated. Use BaseLayout for main routes. Error boundary: 404 page.",
+      "title": "App shell, navigation bar, and router wiring (src/App.jsx)",
+      "source_screen": "",
+      "description": "Create app shell. Components: navigation bar (top), sidebar (left), main content area. Routing: React Router v6. Routes: all pages from tickets TASK-001 to TASK-007. Auth: public routes (splash, register), private routes (dashboard, exams, etc.). Layout: responsive (mobile: sidebar collapse to hamburger menu).",
       "target_files": [
         "src/App.jsx",
-        "src/routes.jsx"
+        "src/routes.jsx",
+        "src/components/Navbar.jsx",
+        "src/components/Sidebar.jsx"
       ],
       "acceptance_criteria": [
-        "All routes render correct pages",
-        "Auth guard redirect unauthenticated users",
-        "BaseLayout wrap main routes",
-        "404 page show for unknown routes"
+        "Route config in src/routes.jsx (separate file)",
+        "Private routes use AuthContext (src/context/AuthContext.jsx)",
+        "Navbar: brand logo, user avatar, notifications dropdown",
+        "Sidebar: collapsible, items highlight active route",
+        "Test: Vitest route matching + RTL navigation test"
       ],
       "status": "DONE"
     }
   ],
   "status": "IN_PROGRESS",
-  "updated_at": "2026-08-20 09:59:28"
+  "updated_at": "2026-08-20 10:12:08"
 }

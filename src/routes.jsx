@@ -1,64 +1,30 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import BaseLayout from './layouts/BaseLayout';
+import { Routes, Route } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+import Layout from './components/Layout';
+import Splash from './pages/Splash';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import Students from './pages/Students';
-import Courses from './pages/Courses';
-import Reports from './pages/Reports';
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
-import PasswordReset from './pages/auth/PasswordReset';
-import { useAuthStore } from './store/authStore';
+import ExamsCalendar from './pages/ExamsCalendar';
+import HomeworkSearch from './pages/HomeworkSearch';
+import ProductDetail from './pages/ProductDetail';
+import EventDetail from './pages/EventDetail';
 
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuthStore();
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
-};
+export default function AppRoutes() {
+  const { isAuthenticated } = useAuth();
 
-export const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Navigate to="/dashboard" replace />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    element: <Register />,
-  },
-  {
-    path: '/password-reset',
-    element: <PasswordReset />,
-  },
-  {
-    path: '/',
-    element: (
-      <ProtectedRoute>
-        <BaseLayout />
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        path: 'dashboard',
-        element: <Dashboard />,
-      },
-      {
-        path: 'students',
-        element: <Students />,
-      },
-      {
-        path: 'courses',
-        element: <Courses />,
-      },
-      {
-        path: 'reports',
-        element: <Reports />,
-      },
-    ],
-  },
-  {
-    path: '*',
-    element: <div className="text-center p-8">404 - Page not found</div>,
-  },
-]);
+  return (
+    <Routes>
+      <Route path="/" element={<Splash />} />
+      <Route path="/register" element={<Register />} />
+      {isAuthenticated && (
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/exams" element={<ExamsCalendar />} />
+          <Route path="/homework" element={<HomeworkSearch />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/events/:id" element={<EventDetail />} />
+        </Route>
+      )}
+    </Routes>
+  );
+}

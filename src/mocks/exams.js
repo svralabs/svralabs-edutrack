@@ -1,0 +1,28 @@
+export const exams = [
+  {
+    id: 1,
+    date: '2024-05-17',
+    subject: 'Math',
+    subjectColor: 'bg-subject-yellow',
+    instructor: 'Dr. Anna Lesli',
+    instructorAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAKyyM81uTWSAWSJRudT_F4-uh2dVYlzLyraq-eIjq0v9Mn7DcrQFClToz5Kx1N5vgTuL6pJETdcvWmHgmUbrJ6eHdc4phpIsrCddBKbUuOjbxDfAsLusztKwmI7vwBC_-zB0drz1RteFsm4nxltXuFSbFIVwG1jSN8gAIoZFsAB24b7D6lBJINhNfmfYeHC4ZlxVBP81_PaG6TXOyYsbeg7IT5ZJKTCbSbpPV4aWf-9Qmyw01nwyCS',
+    time: '09:00 AM',
+    location: 'Room 101',
+    duration: '2 hours',
+    type: 'Midterm',
+    notes: 'Bring calculator and formula sheet',
+  },
+  {
+    id: 2,
+    date: '2024-05-29',
+    subject: 'Science',
+    subjectColor: 'bg-primary-container',
+    instructor: 'Dr. John Smith',
+    instructorAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuABF0ACRfd7EQ8RAfwzot2kxlnHus37CM2_B6VJYSINF4_pYXbQ4AzMqn_gNVZuH3uXuVwJLvgNbx7fus2Z-tePdWZNOjfMtj1ZfmzB47o_c094Dj48Qp6jnGC4fvJF8WNrh8foorMvRIcAjO-yT4siK8uGQcKjdEQzzIYb4Y5o5DBYFOXM0N_9kA_X20mLQtyhO0ZOJE-mLE69XSDzpNG2IRcjBHUxz0DikzaSPiTq8yFegschR1AU',
+    time: '10:00 AM',
+    location: 'Lab 202',
+    duration: '3 hours',
+    type: 'Final',
+    notes: 'Lab coat required',
+  },
+];
