@@ -1,39 +1,73 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import InvoiceActionValidationManager from './pages/InvoiceActionValidationManager';
-import EventDetailKatalogProduk from './pages/EventDetailKatalogProduk';
-import CalendarExamsSchedule from './pages/CalendarExamsSchedule';
-import DashboardHome from './pages/DashboardHome';
-import HomeworkSearch from './pages/HomeworkSearch';
-import SplashScreenNamaBrand from './pages/SplashScreenNamaBrand';
-import DetailEventKatalogProduk1 from './pages/DetailEventKatalogProduk1';
-import DetailEventKatalogProduk2 from './pages/DetailEventKatalogProduk2';
-import PesananSayaOpsiPenerima from './pages/PesananSayaOpsiPenerima';
-import DetailProdukProductDetail from './pages/DetailProdukProductDetail';
-import DaftarAkunRegistration from './pages/DaftarAkunRegistration';
-import BerandaJasaTitip from './pages/BerandaJasaTitip';
-import PesananSayaOrderReview from './pages/PesananSayaOrderReview';
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
+import { ThemeProvider } from './context/ThemeContext';
+import ErrorBoundary from './components/ErrorBoundary';
+import Dashboard from './pages/Dashboard';
+import Register from './pages/Register';
+import OrderReview from './pages/OrderReview';
+import Splash from './pages/Splash';
+import ProductDetail from './pages/ProductDetail';
+import ExamCalendar from './pages/ExamCalendar';
+
+function ScreenBar() {
+  const loc = useLocation();
+  const navs = [
+    { path: '/', label: 'Dashboard' },
+    { path: '/register', label: 'Register' },
+    { path: '/orderreview', label: 'OrderReview' },
+    { path: '/splash', label: 'Splash' },
+    { path: '/productdetail', label: 'ProductDetail' },
+    { path: '/examcalendar', label: 'ExamCalendar' }
+  ];
+
+  return (
+    <div className="fixed top-2 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 backdrop-blur-md border border-slate-700/60 rounded-full px-3 py-1.5 shadow-2xl flex items-center gap-1.5 overflow-x-auto max-w-[95vw]">
+      <span className="text-[10px] font-bold text-violet-400 uppercase tracking-widest px-2 hidden sm:inline">Screens:</span>
+      {navs.map((n) => {
+        const active = loc.pathname === n.path;
+        return (
+          <Link
+            key={n.path}
+            to={n.path}
+            className={`px-3 py-1 text-xs font-semibold rounded-full transition-all whitespace-nowrap ${
+              active
+                ? 'bg-violet-600 text-white shadow-md shadow-violet-500/30'
+                : 'text-slate-300 hover:text-white hover:bg-slate-800'
+            }`}
+          >
+            {n.label}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<InvoiceActionValidationManager />} />
-<Route path='/invoice-action-validation-manager' element={<InvoiceActionValidationManager />} />
-<Route path='/event-detail-katalog-produk' element={<EventDetailKatalogProduk />} />
-<Route path='/calendar-exams-schedule' element={<CalendarExamsSchedule />} />
-<Route path='/dashboard-home' element={<DashboardHome />} />
-<Route path='/homework-search' element={<HomeworkSearch />} />
-<Route path='/splash-screen-nama-brand' element={<SplashScreenNamaBrand />} />
-<Route path='/detail-event-katalog-produk-1' element={<DetailEventKatalogProduk1 />} />
-<Route path='/detail-event-katalog-produk-2' element={<DetailEventKatalogProduk2 />} />
-<Route path='/pesanan-saya-opsi-penerima' element={<PesananSayaOpsiPenerima />} />
-<Route path='/detail-produk-product-detail' element={<DetailProdukProductDetail />} />
-<Route path='/daftar-akun-registration' element={<DaftarAkunRegistration />} />
-<Route path='/beranda-jasa-titip' element={<BerandaJasaTitip />} />
-<Route path='/pesanan-saya-order-review' element={<PesananSayaOrderReview />} />
-        <Route path="*" element={<InvoiceActionValidationManager />} />
-      </Routes>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <AuthProvider>
+        <CartProvider>
+          <ThemeProvider>
+            <BrowserRouter>
+              <ScreenBar />
+              <div className="pt-10 min-h-screen">
+                <Routes>
+                  <Route path='/' element={<Dashboard />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/orderreview' element={<OrderReview />} />
+        <Route path='/splash' element={<Splash />} />
+        <Route path='/productdetail' element={<ProductDetail />} />
+        <Route path='/examcalendar' element={<ExamCalendar />} />
+                  <Route path="*" element={<Dashboard />} />
+                </Routes>
+              </div>
+            </BrowserRouter>
+          </ThemeProvider>
+        </CartProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
