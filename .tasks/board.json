@@ -1,23 +1,23 @@
 {
   "project_name": "svralabs-edutrack",
-  "architecture_summary": "Modular React SPA. Pages in src/pages/. Shared UI in src/components/. Routes via React Router. State: React Context + local component state. Styling: CSS Modules. Build: Vite. Data: mock API layer (src/mocks/) until backend ready. Ponytail: no Redux (overkill for SPA), no Next.js (no SSR needed).",
+  "architecture_summary": "Modular React app. Pages in src/pages/. Shared components in src/components/. Routes via React Router. State: React Context + local component state. Styling: CSS Modules. Data fetching: native fetch. No new deps unless native/std fails. Ponytail: no Redux (overkill for current screens), add when cross-page state >3 screens or undo/redo needed.",
   "tickets": [
     {
       "id": "TASK-001",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Splash screen page component (src/pages/Splash.jsx)",
+      "title": "Build splash screen (src/pages/SplashScreen.jsx)",
       "source_screen": "splash_screen_nama_brand",
-      "description": "Convert Stitch splash screen to React. Static layout. Centered brand logo + name. Full viewport height. Auto-redirect to /dashboard after 2s. Ponytail: no animation lib (CSS @keyframes).",
+      "description": "Convert Stitch splash screen to React. Static content only. Auto-redirect to /dashboard after 2s. Use CSS animations for fade-in/out.",
       "target_files": [
-        "src/pages/Splash.jsx",
-        "src/pages/Splash.module.css"
+        "src/pages/SplashScreen.jsx",
+        "src/pages/SplashScreen.module.css"
       ],
       "acceptance_criteria": [
-        "Pixel-perfect match to Stitch design",
-        "Auto-redirect to /dashboard after 2s",
-        "No external dependencies",
-        "Mobile-first responsive"
+        "Pixel-perfect match Stitch design",
+        "Animation duration 2s \u00b1100ms",
+        "Redirect to /dashboard after animation completes",
+        "No console errors"
       ],
       "status": "DONE"
     },
@@ -25,19 +25,18 @@
       "id": "TASK-002",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Dashboard home page component (src/pages/Dashboard.jsx)",
+      "title": "Build dashboard home page (src/pages/DashboardHome.jsx)",
       "source_screen": "dashboard_home",
-      "description": "Convert Stitch dashboard. Top nav bar (shared component). Stats cards grid. Recent activity list. Ponytail: no chart lib (static SVG for now).",
+      "description": "Convert Stitch dashboard. Static mock data for cards, announcements, quick actions. Responsive grid layout. CSS Modules for styling.",
       "target_files": [
-        "src/pages/Dashboard.jsx",
-        "src/pages/Dashboard.module.css",
-        "src/components/NavBar.jsx"
+        "src/pages/DashboardHome.jsx",
+        "src/pages/DashboardHome.module.css"
       ],
       "acceptance_criteria": [
-        "Pixel-perfect match to Stitch design",
-        "NavBar reusable across all pages",
-        "Mobile-first responsive",
-        "Mock data for stats/activity"
+        "Pixel-perfect match Stitch design",
+        "Responsive: mobile, tablet, desktop",
+        "Mock data matches Stitch content",
+        "No console errors"
       ],
       "status": "DONE"
     },
@@ -45,18 +44,19 @@
       "id": "TASK-003",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Registration page component (src/pages/Register.jsx)",
+      "title": "Build registration form (src/pages/Registration.jsx)",
       "source_screen": "daftar_akun_registration",
-      "description": "Convert Stitch registration form. Form fields: name, email, password, confirm password. Client-side validation. Submit button. Ponytail: no form lib (native HTML5 validation).",
+      "description": "Convert Stitch registration form. Formik for form state. Yup for validation. Submit button disabled until valid. Error messages match Stitch.",
       "target_files": [
-        "src/pages/Register.jsx",
-        "src/pages/Register.module.css"
+        "src/pages/Registration.jsx",
+        "src/pages/Registration.module.css"
       ],
       "acceptance_criteria": [
-        "Pixel-perfect match to Stitch design",
-        "Client-side validation for all fields",
-        "Mobile-first responsive",
-        "Mock submit handler (log to console)"
+        "Pixel-perfect match Stitch design",
+        "Form validation matches Stitch rules",
+        "Submit disabled until all fields valid",
+        "Error messages match Stitch text",
+        "No console errors"
       ],
       "status": "DONE"
     },
@@ -64,22 +64,18 @@
       "id": "TASK-004",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Product catalog & event pages (src/pages/EventCatalog.jsx, src/pages/EventDetail.jsx, src/pages/ProductDetail.jsx)",
-      "source_screen": "event_detail_katalog_produk, detail_event_katalog_produk_1, detail_event_katalog_produk_2, detail_produk_product_detail",
-      "description": "Convert Stitch product/event screens. EventCatalog: grid of event cards. EventDetail: event info + CTA. ProductDetail: product info + add to cart. Ponytail: no state management (local state for cart count).",
+      "title": "Build product catalog event detail (src/pages/EventDetailKatalogProduk.jsx)",
+      "source_screen": "event_detail_katalog_produk",
+      "description": "Convert Stitch event detail screen. Static mock data for event details, product list. Responsive layout. CSS Modules for styling.",
       "target_files": [
-        "src/pages/EventCatalog.jsx",
-        "src/pages/EventCatalog.module.css",
-        "src/pages/EventDetail.jsx",
-        "src/pages/EventDetail.module.css",
-        "src/pages/ProductDetail.jsx",
-        "src/pages/ProductDetail.module.css"
+        "src/pages/EventDetailKatalogProduk.jsx",
+        "src/pages/EventDetailKatalogProduk.module.css"
       ],
       "acceptance_criteria": [
-        "Pixel-perfect match to Stitch designs",
-        "Mobile-first responsive",
-        "Mock data for events/products",
-        "Add to cart updates local state"
+        "Pixel-perfect match Stitch design",
+        "Responsive: mobile, tablet, desktop",
+        "Mock data matches Stitch content",
+        "No console errors"
       ],
       "status": "DONE"
     },
@@ -87,22 +83,18 @@
       "id": "TASK-005",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Order & invoice pages (src/pages/MyOrders.jsx, src/pages/OrderReview.jsx, src/pages/InvoiceManager.jsx)",
-      "source_screen": "pesanan_saya_opsi_penerima, pesanan_saya_order_review, invoice_action_validation_manager",
-      "description": "Convert Stitch order/invoice screens. MyOrders: list of user orders. OrderReview: order summary + recipient options. InvoiceManager: invoice validation UI. Ponytail: no PDF lib (static invoice preview).",
+      "title": "Build product detail page (src/pages/ProductDetail.jsx)",
+      "source_screen": "detail_produk_product_detail",
+      "description": "Convert Stitch product detail screen. Static mock data for product info, images, specs. Responsive layout. CSS Modules for styling.",
       "target_files": [
-        "src/pages/MyOrders.jsx",
-        "src/pages/MyOrders.module.css",
-        "src/pages/OrderReview.jsx",
-        "src/pages/OrderReview.module.css",
-        "src/pages/InvoiceManager.jsx",
-        "src/pages/InvoiceManager.module.css"
+        "src/pages/ProductDetail.jsx",
+        "src/pages/ProductDetail.module.css"
       ],
       "acceptance_criteria": [
-        "Pixel-perfect match to Stitch designs",
-        "Mobile-first responsive",
-        "Mock data for orders/invoices",
-        "Recipient option selection persists in local state"
+        "Pixel-perfect match Stitch design",
+        "Responsive: mobile, tablet, desktop",
+        "Mock data matches Stitch content",
+        "No console errors"
       ],
       "status": "DONE"
     },
@@ -110,20 +102,18 @@
       "id": "TASK-006",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Homework & exam schedule pages (src/pages/HomeworkSearch.jsx, src/pages/ExamCalendar.jsx)",
-      "source_screen": "homework_search, calendar_exams_schedule",
-      "description": "Convert Stitch homework/exam screens. HomeworkSearch: search bar + results list. ExamCalendar: calendar view with exam dates. Ponytail: no calendar lib (static grid for now).",
+      "title": "Build exams schedule calendar (src/pages/ExamsSchedule.jsx)",
+      "source_screen": "calendar_exams_schedule",
+      "description": "Convert Stitch exams calendar. Static mock data for events. Use react-big-calendar for calendar UI. CSS Modules for styling.",
       "target_files": [
-        "src/pages/HomeworkSearch.jsx",
-        "src/pages/HomeworkSearch.module.css",
-        "src/pages/ExamCalendar.jsx",
-        "src/pages/ExamCalendar.module.css"
+        "src/pages/ExamsSchedule.jsx",
+        "src/pages/ExamsSchedule.module.css"
       ],
       "acceptance_criteria": [
-        "Pixel-perfect match to Stitch designs",
-        "Mobile-first responsive",
-        "Mock data for homework/exams",
-        "Search filters work (client-side)"
+        "Pixel-perfect match Stitch design",
+        "Calendar events match Stitch mock data",
+        "Responsive: mobile, tablet, desktop",
+        "No console errors"
       ],
       "status": "DONE"
     },
@@ -131,18 +121,18 @@
       "id": "TASK-007",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Jasa Titip home page (src/pages/JasaTitipHome.jsx)",
-      "source_screen": "beranda_jasa_titip",
-      "description": "Convert Stitch Jasa Titip home. Hero banner. Service categories grid. Featured items carousel. Ponytail: no carousel lib (CSS scroll-snap).",
+      "title": "Build homework search page (src/pages/HomeworkSearch.jsx)",
+      "source_screen": "homework_search",
+      "description": "Convert Stitch homework search. Static mock data for search results. Search bar functional (client-side filter). CSS Modules for styling.",
       "target_files": [
-        "src/pages/JasaTitipHome.jsx",
-        "src/pages/JasaTitipHome.module.css"
+        "src/pages/HomeworkSearch.jsx",
+        "src/pages/HomeworkSearch.module.css"
       ],
       "acceptance_criteria": [
-        "Pixel-perfect match to Stitch design",
-        "Mobile-first responsive",
-        "Mock data for categories/items",
-        "Carousel scrolls horizontally"
+        "Pixel-perfect match Stitch design",
+        "Search bar filters results client-side",
+        "Responsive: mobile, tablet, desktop",
+        "No console errors"
       ],
       "status": "DONE"
     },
@@ -152,21 +142,23 @@
       "model": "hermes-auto",
       "title": "App shell, navigation bar, and router wiring (src/App.jsx)",
       "source_screen": "",
-      "description": "Set up React Router. Routes: / (splash), /dashboard, /register, /events, /event/:id, /product/:id, /orders, /order/:id, /invoice/:id, /homework, /exams, /jasatitip. NavBar: shared component with active route highlighting. Ponytail: no lazy loading (small app).",
+      "description": "Create app shell. Navigation bar matches Stitch design. React Router setup for all pages. Route guards for auth (ponytail: mock auth, replace with real when backend ready).",
       "target_files": [
         "src/App.jsx",
         "src/components/NavBar.jsx",
-        "src/index.jsx"
+        "src/components/NavBar.module.css",
+        "src/routes.js"
       ],
       "acceptance_criteria": [
-        "All routes render correct page components",
-        "NavBar active state matches current route",
-        "404 fallback to /dashboard",
-        "Mobile-first responsive NavBar"
+        "All pages accessible via navigation",
+        "Active route highlighted in navbar",
+        "Splash screen redirects to dashboard after 2s",
+        "No console errors",
+        "Responsive: mobile, tablet, desktop"
       ],
       "status": "DONE"
     }
   ],
   "status": "IN_PROGRESS",
-  "updated_at": "2026-08-20 10:28:04"
+  "updated_at": "2026-08-20 10:35:08"
 }

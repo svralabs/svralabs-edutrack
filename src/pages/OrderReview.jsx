@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function MyOrders() {
+export default function OrderReview() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('lessons');
 
@@ -70,16 +70,7 @@ export default function MyOrders() {
 </section>
 {/*  Data Penerima Section  */}
 <section className="bg-surface rounded-2xl p-card-padding shadow-sm mb-8">
-<h2 className="font-headline-md text-headline-md-mobile font-bold text-on-surface mb-6">Data Penerima</h2><div className="flex gap-2 mb-6 p-1 bg-surface-container rounded-full">
-<button className="flex-1 py-2 px-4 rounded-full text-label-sm font-medium transition-all bg-primary text-on-primary shadow-sm" id="btn-self">
-    Diri Sendiri
-  </button>
-<button className="flex-1 py-2 px-4 rounded-full text-label-sm font-medium transition-all text-on-surface-variant hover:bg-surface-variant/50" id="btn-others">
-    Orang Lain
-  </button>
-</div>
-<div className="border-t border-surface-variant/50 mb-6"></div>
-<div className="hidden" id="recipient-form-container">
+<h2 className="font-headline-md text-headline-md-mobile font-bold text-on-surface mb-6">Data Penerima</h2>
 <div className="space-y-5">
 <div className="space-y-2">
 <label className="block text-label-sm font-label-sm text-on-surface-variant ml-1">Nama Penerima</label>
@@ -92,7 +83,6 @@ export default function MyOrders() {
 <div className="space-y-2">
 <label className="block text-label-sm font-label-sm text-on-surface-variant ml-1">Alamat Lengkap Penerima</label>
 <textarea className="w-full border-outline-variant bg-surface rounded-2xl px-4 py-3 focus:ring-primary focus:border-primary transition-all text-body-base resize-none" placeholder="Tuliskan alamat lengkap pengiriman..." rows="4"></textarea>
-</div>
 </div>
 </div>
 </section>
