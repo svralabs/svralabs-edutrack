@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 let state = {
   items: [
     { id: '1', name: 'Premium Item', price: 29.99, quantity: 1, image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500' }
@@ -6,6 +6,17 @@ let state = {
 };
 const listeners = new Set();
 const notify = () => listeners.forEach(l => l(state));
+
+export const CartContext = createContext(state);
+export const CartProvider = ({ children }) => {
+  const [items, setItems] = useState(state.items);
+  return (
+    <CartContext.Provider value={{ items, addItem: (i) => setItems(prev => [...prev, i]), removeItem: (id) => setItems(prev => prev.filter(x => x.id !== id)) }}>
+      {children}
+    </CartContext.Provider>
+  );
+};
+export const useCart = () => useContext(CartContext) || state;
 
 export const useCartStore = (selector) => {
   const [, setTick] = useState(0);

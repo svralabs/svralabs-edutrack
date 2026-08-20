@@ -1,22 +1,23 @@
 {
   "project_name": "svralabs-edutrack",
-  "architecture_summary": "Modular React SPA. Pages in src/pages/. Shared UI in src/components/. State: React Context + local component state. Routing: React Router v6. Styling: Tailwind CSS. Data: mock API layer (src/mocks/) until backend ready. Build: Vite. Testing: Vitest + React Testing Library. Lint: ESLint + Prettier. CI: GitHub Actions.",
+  "architecture_summary": "Modular React SPA. Pages in src/pages/. Shared UI in src/components/. Routes via React Router. State: React Context + local component state. Styling: CSS Modules. Build: Vite. Data: mock API layer (src/mocks/) until backend ready. Ponytail: no Redux (overkill for SPA), no Next.js (no SSR needed).",
   "tickets": [
     {
       "id": "TASK-001",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Splash screen page (src/pages/Splash.jsx)",
+      "title": "Splash screen page component (src/pages/Splash.jsx)",
       "source_screen": "splash_screen_nama_brand",
-      "description": "Convert Stitch splash screen to React. Static screen. Centered brand logo + name. Auto-redirect to /dashboard after 2s. No user interaction.",
+      "description": "Convert Stitch splash screen to React. Static layout. Centered brand logo + name. Full viewport height. Auto-redirect to /dashboard after 2s. Ponytail: no animation lib (CSS @keyframes).",
       "target_files": [
-        "src/pages/Splash.jsx"
+        "src/pages/Splash.jsx",
+        "src/pages/Splash.module.css"
       ],
       "acceptance_criteria": [
         "Pixel-perfect match to Stitch design",
-        "Logo SVG inline or imported (optimize with svgo)",
-        "Auto-redirect use setTimeout + React Router navigate",
-        "Test: manual check redirect timing"
+        "Auto-redirect to /dashboard after 2s",
+        "No external dependencies",
+        "Mobile-first responsive"
       ],
       "status": "DONE"
     },
@@ -24,19 +25,19 @@
       "id": "TASK-002",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Dashboard home page (src/pages/Dashboard.jsx)",
+      "title": "Dashboard home page component (src/pages/Dashboard.jsx)",
       "source_screen": "dashboard_home",
-      "description": "Convert Stitch dashboard. Layout: top bar, left sidebar (collapsible), main content grid. Components: summary cards, recent activity list, quick action buttons. Data: mock API (src/mocks/dashboard.js).",
+      "description": "Convert Stitch dashboard. Top nav bar (shared component). Stats cards grid. Recent activity list. Ponytail: no chart lib (static SVG for now).",
       "target_files": [
         "src/pages/Dashboard.jsx",
-        "src/mocks/dashboard.js"
+        "src/pages/Dashboard.module.css",
+        "src/components/NavBar.jsx"
       ],
       "acceptance_criteria": [
-        "Responsive layout (Tailwind grid + flex)",
-        "Sidebar toggle persist in localStorage",
-        "Cards use shared Card component (src/components/Card.jsx)",
-        "Mock data fetch on mount (React Query useQuery)",
-        "Test: Vitest snapshot + RTL interaction test"
+        "Pixel-perfect match to Stitch design",
+        "NavBar reusable across all pages",
+        "Mobile-first responsive",
+        "Mock data for stats/activity"
       ],
       "status": "DONE"
     },
@@ -44,19 +45,18 @@
       "id": "TASK-003",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Registration page (src/pages/Register.jsx)",
+      "title": "Registration page component (src/pages/Register.jsx)",
       "source_screen": "daftar_akun_registration",
-      "description": "Convert Stitch registration form. Fields: name, email, phone, password, confirm password. Validation: client-side (Zod schema). Submit: mock API (src/mocks/auth.js). Success: redirect to /dashboard.",
+      "description": "Convert Stitch registration form. Form fields: name, email, password, confirm password. Client-side validation. Submit button. Ponytail: no form lib (native HTML5 validation).",
       "target_files": [
         "src/pages/Register.jsx",
-        "src/mocks/auth.js"
+        "src/pages/Register.module.css"
       ],
       "acceptance_criteria": [
-        "Form use react-hook-form + Zod resolver",
-        "Password strength meter (zxcvbn)",
-        "Email/phone format validation",
-        "Submit button disable during loading",
-        "Test: Vitest form validation + RTL submit flow"
+        "Pixel-perfect match to Stitch design",
+        "Client-side validation for all fields",
+        "Mobile-first responsive",
+        "Mock submit handler (log to console)"
       ],
       "status": "DONE"
     },
@@ -64,18 +64,22 @@
       "id": "TASK-004",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Product catalog event detail page (src/pages/EventDetail.jsx)",
-      "source_screen": "event_detail_katalog_produk",
-      "description": "Convert Stitch event detail. Layout: hero image, event info, description, CTA button. Data: mock API (src/mocks/events.js). Variants: detail_event_katalog_produk_1 and detail_event_katalog_produk_2 (single component, conditional rendering).",
+      "title": "Product catalog & event pages (src/pages/EventCatalog.jsx, src/pages/EventDetail.jsx, src/pages/ProductDetail.jsx)",
+      "source_screen": "event_detail_katalog_produk, detail_event_katalog_produk_1, detail_event_katalog_produk_2, detail_produk_product_detail",
+      "description": "Convert Stitch product/event screens. EventCatalog: grid of event cards. EventDetail: event info + CTA. ProductDetail: product info + add to cart. Ponytail: no state management (local state for cart count).",
       "target_files": [
+        "src/pages/EventCatalog.jsx",
+        "src/pages/EventCatalog.module.css",
         "src/pages/EventDetail.jsx",
-        "src/mocks/events.js"
+        "src/pages/EventDetail.module.css",
+        "src/pages/ProductDetail.jsx",
+        "src/pages/ProductDetail.module.css"
       ],
       "acceptance_criteria": [
-        "Hero image use next/image (optimize)",
-        "CTA button state (enabled/disabled) based on event status",
-        "Variant switch via URL param (e.g., /events/123?view=variant2)",
-        "Test: Vitest snapshot for both variants"
+        "Pixel-perfect match to Stitch designs",
+        "Mobile-first responsive",
+        "Mock data for events/products",
+        "Add to cart updates local state"
       ],
       "status": "DONE"
     },
@@ -83,18 +87,22 @@
       "id": "TASK-005",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Product detail page (src/pages/ProductDetail.jsx)",
-      "source_screen": "detail_produk_product_detail",
-      "description": "Convert Stitch product detail. Layout: image carousel, product info, price, quantity selector, add to cart button. Data: mock API (src/mocks/products.js).",
+      "title": "Order & invoice pages (src/pages/MyOrders.jsx, src/pages/OrderReview.jsx, src/pages/InvoiceManager.jsx)",
+      "source_screen": "pesanan_saya_opsi_penerima, pesanan_saya_order_review, invoice_action_validation_manager",
+      "description": "Convert Stitch order/invoice screens. MyOrders: list of user orders. OrderReview: order summary + recipient options. InvoiceManager: invoice validation UI. Ponytail: no PDF lib (static invoice preview).",
       "target_files": [
-        "src/pages/ProductDetail.jsx",
-        "src/mocks/products.js"
+        "src/pages/MyOrders.jsx",
+        "src/pages/MyOrders.module.css",
+        "src/pages/OrderReview.jsx",
+        "src/pages/OrderReview.module.css",
+        "src/pages/InvoiceManager.jsx",
+        "src/pages/InvoiceManager.module.css"
       ],
       "acceptance_criteria": [
-        "Image carousel use Embla Carousel (already in package.json)",
-        "Quantity selector min/max based on stock",
-        "Add to cart dispatch to CartContext",
-        "Test: RTL interaction test for carousel + quantity"
+        "Pixel-perfect match to Stitch designs",
+        "Mobile-first responsive",
+        "Mock data for orders/invoices",
+        "Recipient option selection persists in local state"
       ],
       "status": "DONE"
     },
@@ -102,18 +110,20 @@
       "id": "TASK-006",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Exams calendar page (src/pages/ExamsCalendar.jsx)",
-      "source_screen": "calendar_exams_schedule",
-      "description": "Convert Stitch exams calendar. Layout: month view, day cells, exam events as badges. Data: mock API (src/mocks/exams.js). Interactions: click day to show exam list modal.",
+      "title": "Homework & exam schedule pages (src/pages/HomeworkSearch.jsx, src/pages/ExamCalendar.jsx)",
+      "source_screen": "homework_search, calendar_exams_schedule",
+      "description": "Convert Stitch homework/exam screens. HomeworkSearch: search bar + results list. ExamCalendar: calendar view with exam dates. Ponytail: no calendar lib (static grid for now).",
       "target_files": [
-        "src/pages/ExamsCalendar.jsx",
-        "src/mocks/exams.js"
+        "src/pages/HomeworkSearch.jsx",
+        "src/pages/HomeworkSearch.module.css",
+        "src/pages/ExamCalendar.jsx",
+        "src/pages/ExamCalendar.module.css"
       ],
       "acceptance_criteria": [
-        "Calendar use react-big-calendar (already in package.json)",
-        "Modal use shared Modal component (src/components/Modal.jsx)",
-        "Events color-coded by subject",
-        "Test: Vitest snapshot + RTL click day test"
+        "Pixel-perfect match to Stitch designs",
+        "Mobile-first responsive",
+        "Mock data for homework/exams",
+        "Search filters work (client-side)"
       ],
       "status": "DONE"
     },
@@ -121,18 +131,18 @@
       "id": "TASK-007",
       "role": "frontend",
       "model": "hermes-auto",
-      "title": "Homework search page (src/pages/HomeworkSearch.jsx)",
-      "source_screen": "homework_search",
-      "description": "Convert Stitch homework search. Layout: search bar, filters (subject, due date), results list. Data: mock API (src/mocks/homework.js). Interactions: debounced search, filter persistence in URL.",
+      "title": "Jasa Titip home page (src/pages/JasaTitipHome.jsx)",
+      "source_screen": "beranda_jasa_titip",
+      "description": "Convert Stitch Jasa Titip home. Hero banner. Service categories grid. Featured items carousel. Ponytail: no carousel lib (CSS scroll-snap).",
       "target_files": [
-        "src/pages/HomeworkSearch.jsx",
-        "src/mocks/homework.js"
+        "src/pages/JasaTitipHome.jsx",
+        "src/pages/JasaTitipHome.module.css"
       ],
       "acceptance_criteria": [
-        "Search use React Query useInfiniteQuery (infinite scroll)",
-        "Filters sync with URL search params (React Router useSearchParams)",
-        "Results list use shared List component (src/components/List.jsx)",
-        "Test: RTL search + filter interaction test"
+        "Pixel-perfect match to Stitch design",
+        "Mobile-first responsive",
+        "Mock data for categories/items",
+        "Carousel scrolls horizontally"
       ],
       "status": "DONE"
     },
@@ -142,23 +152,21 @@
       "model": "hermes-auto",
       "title": "App shell, navigation bar, and router wiring (src/App.jsx)",
       "source_screen": "",
-      "description": "Create app shell. Components: navigation bar (top), sidebar (left), main content area. Routing: React Router v6. Routes: all pages from tickets TASK-001 to TASK-007. Auth: public routes (splash, register), private routes (dashboard, exams, etc.). Layout: responsive (mobile: sidebar collapse to hamburger menu).",
+      "description": "Set up React Router. Routes: / (splash), /dashboard, /register, /events, /event/:id, /product/:id, /orders, /order/:id, /invoice/:id, /homework, /exams, /jasatitip. NavBar: shared component with active route highlighting. Ponytail: no lazy loading (small app).",
       "target_files": [
         "src/App.jsx",
-        "src/routes.jsx",
-        "src/components/Navbar.jsx",
-        "src/components/Sidebar.jsx"
+        "src/components/NavBar.jsx",
+        "src/index.jsx"
       ],
       "acceptance_criteria": [
-        "Route config in src/routes.jsx (separate file)",
-        "Private routes use AuthContext (src/context/AuthContext.jsx)",
-        "Navbar: brand logo, user avatar, notifications dropdown",
-        "Sidebar: collapsible, items highlight active route",
-        "Test: Vitest route matching + RTL navigation test"
+        "All routes render correct page components",
+        "NavBar active state matches current route",
+        "404 fallback to /dashboard",
+        "Mobile-first responsive NavBar"
       ],
       "status": "DONE"
     }
   ],
   "status": "IN_PROGRESS",
-  "updated_at": "2026-08-20 10:12:08"
+  "updated_at": "2026-08-20 10:28:04"
 }

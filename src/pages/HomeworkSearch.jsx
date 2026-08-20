@@ -1,128 +1,111 @@
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { Search, Filter, ChevronRight } from 'lucide-react';
-import List from '../components/List';
-import { subjects, homework } from '../mocks/homework';
+import React, { useState } from 'react';
+import styles from './HomeworkSearch.module.css';
 
-const fetchHomework = async ({ pageParam = 0, queryKey }) => {
-  const [_, { search, subject }] = queryKey;
-  const start = pageParam * 10;
-  const end = start + 10;
+const mockHomework = [
+  { id: 1, subject: 'Music', title: 'Jazz Theory', dueDate: '19 May', icon: 'music_note', color: 'secondary' },
+  { id: 2, subject: 'Math', title: 'Calculus II', dueDate: '29 May', icon: 'calculate', color: 'primary' },
+  { id: 3, subject: 'History', title: 'World War II', dueDate: '30 May', icon: 'history_edu', color: 'tertiary-container' },
+  { id: 4, subject: 'Science', title: 'Biology', dueDate: '31 May', icon: 'biotech', color: 'subject-green' },
+];
 
-  let filteredHomework = homework;
+export default function HomeworkSearch() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState(null);
 
-  if (search) {
-    filteredHomework = filteredHomework.filter(item =>
-      item.title.toLowerCase().includes(search.toLowerCase()) ||
-      item.subject.toLowerCase().includes(search.toLowerCase())
-    );
-  }
-
-  if (subject) {
-    filteredHomework = filteredHomework.filter(item =>
-      item.subject.toLowerCase() === subject.toLowerCase()
-    );
-  }
-
-  return {
-    data: filteredHomework.slice(start, end),
-    nextPage: filteredHomework.length > end ? pageParam + 1 : undefined,
-  };
-};
-
-const HomeworkSearch = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState(searchParams.get('search') || '');
-  const [subjectFilter, setSubjectFilter] = useState(searchParams.get('subject') || '');
-
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (search) params.set('search', search);
-    if (subjectFilter) params.set('subject', subjectFilter);
-    setSearchParams(params);
-  }, [search, subjectFilter, setSearchParams]);
-
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ['homework', { search, subject: subjectFilter }],
-    queryFn: fetchHomework,
-    getNextPageParam: (lastPage) => lastPage.nextPage,
-  });
-
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const handleSubjectFilter = (subject) => {
-    setSubjectFilter(subject === subjectFilter ? '' : subject);
-  };
-
-  const renderHomeworkItem = (item) => (
-    <div className="bg-surface p-6 rounded-xl border border-outline-variant/10 shadow-sm active:scale-[0.98] transition-all cursor-pointer">
-      <div className={`w-10 h-10 rounded-lg bg-${item.color}/10 text-${item.color} flex items-center justify-center mb-4`}>
-        <span className="material-symbols-outlined">{item.icon}</span>
-      </div>
-      <h3 className="font-heading-md text-on-surface mb-1">{item.title}</h3>
-      <p className="font-label-sm text-text-secondary">{item.subject} - {item.dueDate}</p>
-    </div>
+  const filteredHomework = mockHomework.filter(item =>
+    (item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     item.subject.toLowerCase().includes(searchTerm.toLowerCase())) &&
+    (!selectedSubject || item.subject === selectedSubject)
   );
+
+  const subjects = [...new Set(mockHomework.map(item => item.subject))];
 
   return (
-    <main className="px-margin-mobile space-y-8 mt-2">
-      <section className="relative">
-        <div className="flex items-center bg-surface w-full rounded-full px-6 py-3.5 shadow-sm border border-outline-variant/30 group focus-within:ring-2 focus-within:ring-primary/20 transition-all">
-          <Search className="text-outline mr-3" />
-          <input
-            className="bg-transparent border-none focus:ring-0 w-full font-body-base text-on-surface placeholder:text-outline-variant"
-            placeholder="Search"
-            type="text"
-            value={search}
-            onChange={handleSearchChange}
-          />
-          <button className="ml-2 text-on-surface-variant hover:text-primary transition-colors">
-            <Filter />
-          </button>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <div className={styles.headerLeft}>
+          <div className={styles.profileImage}>
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtGPNpEDryWoYbolyWWBz3x9oRxC5Ty0arhQ0-O_PSxbR-hKGluMJWieDser_udDaKc4Hjy6mFqz5gN8vR4vYv-VVi573epHhaXNSiqegy9WBeNB3hUHWR6zjdC--0bgzRO7ikAI400C4Ju3BSBk7hMAd4wRmKu88jXUnpH7dgz_nnZ-qm_Kij-2Q-4PcXs4fBhJYqr1z67VPrwHA1Bk328Er6JZTsSh1qH63kvOOKRplKf3F1_nEB" alt="Profile" />
+          </div>
+          <h1 className={styles.appTitle}>EduFlow</h1>
         </div>
-      </section>
+        <button className={styles.notificationButton}>
+          <span className="material-symbols-outlined">notifications</span>
+        </button>
+      </header>
 
-      <section>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="font-headline-md text-on-surface">Subjects</h2>
-          <a className="text-primary font-label-sm hover:underline" href="#">See all</a>
-        </div>
-        <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
-          {subjects.map((subject) => (
-            <div
-              key={subject.id}
-              className={`flex items-center gap-2 bg-${subject.color}/10 text-${subject.color} px-4 py-2 rounded-full whitespace-nowrap active:scale-95 transition-transform cursor-pointer ${subjectFilter === subject.name ? 'ring-2 ring-primary' : ''}`}
-              onClick={() => handleSubjectFilter(subject.name)}
-            >
-              <span className="material-symbols-outlined text-[18px]">{subject.icon}</span>
-              <span className="font-label-sm">{subject.name}</span>
-            </div>
-          ))}
-        </div>
-      </section>
+      <main className={styles.main}>
+        <section className={styles.searchSection}>
+          <div className={styles.searchContainer}>
+            <span className="material-symbols-outlined">search</span>
+            <input
+              className={styles.searchInput}
+              placeholder="Search"
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button className={styles.filterButton}>
+              <span className="material-symbols-outlined">tune</span>
+            </button>
+          </div>
+        </section>
 
-      <section>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="font-headline-md text-on-surface">Homework</h2>
-          <a className="text-primary font-label-sm hover:underline" href="#">See all</a>
-        </div>
-        <List
-          items={data?.pages.flatMap(page => page.data) || []}
-          renderItem={renderHomeworkItem}
-          onLoadMore={hasNextPage ? fetchNextPage : undefined}
-          isLoading={isFetchingNextPage}
-        />
-      </section>
-    </main>
+        <section className={styles.subjectsSection}>
+          <div className={styles.sectionHeader}>
+            <h2>Subjects</h2>
+            <a href="#" className={styles.seeAllLink}>See all</a>
+          </div>
+          <div className={styles.subjectsContainer}>
+            {subjects.map(subject => {
+              const subjectData = mockHomework.find(item => item.subject === subject);
+              return (
+                <div
+                  key={subject}
+                  className={`${styles.subjectChip} ${styles[`${subjectData.color}Chip`]}`}
+                  onClick={() => setSelectedSubject(selectedSubject === subject ? null : subject)}
+                >
+                  <span className="material-symbols-outlined">{subjectData.icon}</span>
+                  <span>{subject}</span>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className={styles.homeworkSection}>
+          <div className={styles.sectionHeader}>
+            <h2>Homework</h2>
+            <a href="#" className={styles.seeAllLink}>See all</a>
+          </div>
+          <div className={styles.homeworkGrid}>
+            {filteredHomework.map(item => (
+              <div key={item.id} className={styles.homeworkCard}>
+                <div className={`${styles.homeworkIcon} ${styles[`${item.color}Icon`]}`}>
+                  <span className="material-symbols-outlined">{item.icon}</span>
+                </div>
+                <h3>{item.title}</h3>
+                <p>{item.subject} - {item.dueDate}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      <nav className={styles.bottomNav}>
+        <a href="#" className={styles.navItem}>
+          <span className="material-symbols-outlined">home</span>
+        </a>
+        <a href="#" className={`${styles.navItem} ${styles.activeNavItem}`}>
+          <span className="material-symbols-outlined">menu_book</span>
+        </a>
+        <a href="#" className={styles.navItem}>
+          <span className="material-symbols-outlined">calendar_month</span>
+        </a>
+        <a href="#" className={styles.navItem}>
+          <span className="material-symbols-outlined">settings</span>
+        </a>
+      </nav>
+    </div>
   );
-};
-
-export default HomeworkSearch;
+}

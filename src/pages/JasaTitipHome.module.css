@@ -1,0 +1,173 @@
+/* Base styles */
+:root {
+  --margin-mobile: 16px;
+  --margin-desktop: 24px;
+  --primary: #6750A4;
+  --primary-container: #EADDFF;
+  --secondary-container: #FFD8E4;
+  --surface: #FFFFFF;
+  --surface-variant: #E7E0EC;
+  --outline: #79747E;
+  --outline-variant: #CAC4D0;
+  --on-surface: #1C1B1F;
+  --on-surface-variant: #49454F;
+  --text-secondary: #49454F;
+  --subject-yellow: #FFC043;
+  --on-tertiary-fixed: #1C1B1F;
+}
+
+body {
+  background-color: #FEF7FF;
+  color: var(--on-surface);
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Typography */
+.font-label-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.font-headline-md {
+  font-size: 28px;
+  line-height: 36px;
+}
+
+.font-heading-md {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.font-body-base {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* Layout */
+.px-margin-mobile {
+  padding-left: var(--margin-mobile);
+  padding-right: var(--margin-mobile);
+}
+
+.space-y-6 {
+  margin-top: 24px;
+}
+
+/* Components */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  opacity: 0.8;
+}
+
+.btn-primary:active {
+  transform: scale(0.95);
+}
+
+/* Cards */
+.card {
+  background-color: var(--surface);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--surface-variant);
+}
+
+/* Inputs */
+.input-search {
+  width: 100%;
+  padding-left: 48px;
+  padding-right: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: var(--surface);
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+.input-search:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-container);
+}
+
+/* Chips */
+.chip {
+  white-space: nowrap;
+  padding: 10px 24px;
+  border-radius: 100px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.chip-primary {
+  background-color: var(--primary);
+  color: white;
+  box-shadow: 0 1px 2px rgba(103, 80, 164, 0.3), 0 1px 3px 1px rgba(103, 80, 164, 0.15);
+}
+
+.chip-secondary {
+  background-color: var(--surface);
+  color: var(--on-surface-variant);
+  border: 1px solid var(--outline-variant);
+}
+
+.chip-secondary:hover {
+  background-color: var(--surface-variant);
+}
+
+/* Badges */
+.badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 12px;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: bold;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-popular {
+  background-color: var(--secondary-container);
+  color: white;
+}
+
+.badge-new {
+  background-color: var(--subject-yellow);
+  color: var(--on-tertiary-fixed);
+}
+
+/* Time indicators */
+.time-indicator {
+  padding: 4px 8px;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.time-indicator-popular {
+  background-color: rgba(255, 97, 97, 0.1);
+  color: var(--secondary);
+}
+
+.time-indicator-new {
+  background-color: rgba(255, 192, 67, 0.1);
+  color: var(--tertiary);
+}

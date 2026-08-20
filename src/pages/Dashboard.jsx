@@ -1,110 +1,74 @@
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Bell } from 'lucide-react';
-import Card from '../components/Card';
-import { mockDashboardData } from '../mocks/dashboard';
+import React from 'react';
+import NavBar from '../components/NavBar';
+import styles from './Dashboard.module.css';
 
-const Dashboard = () => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
-    const saved = localStorage.getItem('sidebarCollapsed');
-    return saved !== null ? JSON.parse(saved) : false;
-  });
+const stats = [
+  { id: 1, title: 'Total Lessons', value: '12', change: '+2', color: 'primary' },
+  { id: 2, title: 'Completed', value: '8', change: '+1', color: 'secondary' },
+  { id: 3, title: 'In Progress', value: '4', change: '+1', color: 'tertiary' },
+];
 
-  const { data: dashboardData } = useQuery({
-    queryKey: ['dashboard'],
-    queryFn: () => Promise.resolve(mockDashboardData)
-  });
+const activities = [
+  { id: 1, title: 'Math Quiz', time: '2 hours ago', icon: 'school' },
+  { id: 2, title: 'History Essay', time: '5 hours ago', icon: 'description' },
+  { id: 3, title: 'Culture Discussion', time: '1 day ago', icon: 'star' },
+];
 
-  useEffect(() => {
-    localStorage.setItem('sidebarCollapsed', JSON.stringify(isSidebarCollapsed));
-  }, [isSidebarCollapsed]);
-
-  const toggleSidebar = () => {
-    setIsSidebarCollapsed(!isSidebarCollapsed);
-  };
-
-  if (!dashboardData) return <div>Loading...</div>;
-
+export default function Dashboard() {
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
-      <div className={`bg-surface-container h-full transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
-        <div className="p-4">
-          <button
-            onClick={toggleSidebar}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white hover:opacity-80 transition-opacity active:scale-95 transition-transform shadow-sm"
-          >
-            <span className="material-symbols-outlined text-primary">{isSidebarCollapsed ? 'menu' : 'close'}</span>
-          </button>
+    <div className={styles.container}>
+      <div className={styles.statusBar}>
+        <span>9:41</span>
+        <div className={styles.statusIcons}>
+          <span className="material-symbols-outlined">signal_cellular_4_bar</span>
+          <span className="material-symbols-outlined">wifi</span>
+          <span className="material-symbols-outlined">battery_full</span>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        {/* Status Bar */}
-        <div className="px-margin-mobile pt-3 pb-2 flex justify-between items-center text-[14px] font-semibold">
-          <span>9:41</span>
-          <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[18px]">signal_cellular_4_bar</span>
-            <span className="material-symbols-outlined text-[18px]">wifi</span>
-            <span className="material-symbols-outlined text-[18px]">battery_full</span>
-          </div>
-        </div>
+      <NavBar />
 
-        {/* Top App Bar */}
-        <header className="flex justify-between items-center px-margin-mobile py-4 w-full bg-background">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-container shadow-sm border border-white/20">
-              <img className="w-full h-full object-cover" src={dashboardData.user.avatar} alt="User avatar" />
+      <section className={styles.welcomeSection}>
+        <h1 className={styles.welcomeTitle}>Good morning, Anna Lane!</h1>
+        <p className={styles.welcomeSubtitle}>Ready to continue your learning journey?</p>
+      </section>
+
+      <nav className={styles.filterNav}>
+        <div className={styles.filterPills}>
+          <button className={`${styles.filterPill} ${styles.active}`}>Lessons</button>
+          <button className={styles.filterPill}>Add. classes</button>
+          <button className={styles.filterPill}>Forum</button>
+        </div>
+      </nav>
+
+      <main className={styles.statsGrid}>
+        {stats.map((stat) => (
+          <div key={stat.id} className={`${styles.statCard} ${styles[stat.color]}`}>
+            <div className={styles.statHeader}>
+              <span className={styles.statTitle}>{stat.title}</span>
+              <span className={styles.statChange}>{stat.change}</span>
             </div>
-            <span className="font-headline-md text-headline-md-mobile font-bold text-on-surface">EduFlow</span>
+            <span className={styles.statValue}>{stat.value}</span>
           </div>
-          <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white hover:opacity-80 transition-opacity active:scale-95 transition-transform shadow-sm">
-            <Bell className="text-primary" size={20} />
-          </button>
-        </header>
+        ))}
+      </main>
 
-        {/* Welcome Section */}
-        <section className="px-margin-mobile mt-4 mb-6">
-          <h1 className="font-headline-xl-mobile text-headline-xl-mobile text-on-background">Good morning, {dashboardData.user.name}!</h1>
-          <p className="font-body-base text-body-base text-text-secondary mt-1">Ready to continue your learning journey?</p>
-        </section>
-
-        {/* Filter Pills */}
-        <nav className="px-margin-mobile mb-8">
-          <div className="flex gap-2 overflow-x-auto no-scrollbar">
-            <button className="px-6 py-2.5 rounded-full bg-primary text-white font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform shadow-md shadow-primary/20">Lessons</button>
-            <button className="px-6 py-2.5 rounded-full bg-white text-on-surface-variant font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform border border-surface-variant">Add. classes</button>
-            <button className="px-6 py-2.5 rounded-full bg-white text-on-surface-variant font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform border border-surface-variant">Forum</button>
-          </div>
-        </nav>
-
-        {/* Subject Bento Grid */}
-        <main className="px-margin-mobile grid grid-cols-2 gap-gap-md">
-          {dashboardData.subjects.map((subject) => (
-            <Card
-              key={subject.id}
-              className={`${subject.color} rounded-[32px] p-card-padding flex flex-col justify-between aspect-square relative overflow-hidden group active:scale-95 transition-transform`}
-            >
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-2xl"></div>
-              <div className="flex justify-between items-start">
-                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md">
-                  <span className="material-symbols-outlined text-white" style={{ fontVariationSettings: "'FILL' 1" }}>{subject.icon}</span>
-                </div>
+      <section className={styles.activitySection}>
+        <h2 className={styles.activityTitle}>Recent Activity</h2>
+        <div className={styles.activityList}>
+          {activities.map((activity) => (
+            <div key={activity.id} className={styles.activityItem}>
+              <div className={styles.activityIcon}>
+                <span className="material-symbols-outlined">{activity.icon}</span>
               </div>
-              <div>
-                <h3 className="text-white font-headline-md text-headline-md font-bold">{subject.name}</h3>
-                <p className="text-white/80 font-label-sm text-[12px] mt-1">Teacher: {subject.teacher}</p>
-                <div className="mt-4 w-8 h-8 rounded-full border-2 border-white/30 overflow-hidden bg-white/20">
-                  <img className="w-full h-full object-cover" src={subject.teacherAvatar} alt={`Teacher ${subject.teacher}`} />
-                </div>
+              <div className={styles.activityContent}>
+                <span className={styles.activityTitle}>{activity.title}</span>
+                <span className={styles.activityTime}>{activity.time}</span>
               </div>
-            </Card>
+            </div>
           ))}
-        </main>
-      </div>
+        </div>
+      </section>
     </div>
   );
-};
-
-export default Dashboard;
+}
